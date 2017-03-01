@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bootstrap input</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+<div class="container">
+    <form role="form">
+        <div class="form-group">
+            <label for="useName">用户名：</label>
+            <input type="text" id="useName" class="form-control" placeholder="请输入用户名" v-model="userName">
+        </div>
+        <div class="form-group">
+            <label for="age">年 龄：</label>
+            <input type="text" id="age" class="form-control" placeholder="请输入年龄" v-model="userAge">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" @click="add" type="button">添加</button>
+            <button class="btn btn-danger" type="reset">重置</button>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-striped">
+        <caption class="text-center h2">用户信息表</caption>
+        <tr class="h4">
+            <th class="text-center">序号</th>
+            <th class="text-center">用户名</th>
+            <th class="text-center">年龄</th>
+            <th class="text-center">操作</th>
+        </tr>
+        <tr v-for="(item,index) in cellData">
+            <td class="text-center">{{index+1}}</td>
+            <td class="text-center">{{item.name}}</td>
+            <td class="text-center">{{item.age}}</td>
+            <td class="text-center">
+                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#layer">删除</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center" v-show="cellData.length!=0">
+                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#layerAll">删除全部</button>
+            </td>
+        </tr>
+        <tr v-show="cellData.length==0">
+            <td colspan="4" class="text-center">
+                <p>暂无数据...</p>
+            </td>
+        </tr>
+    </table>
+    <div class="modal fade" id="layer">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4>确认删除吗？</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" @click="del">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="layerAll">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4>确认删除全部吗？</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" @click="delAll">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var app=new Vue({
+    el:".container",
+    data:{
+        cellData:[],
+        userName:"",
+        userAge:''
+    },methods:{
+            add:function () {
+                this.cellData.push({
+                    name:this.userName,
+                    age:this.userAge
+                })
+                this.userName=''
+                this.userAge=''
+            },
+        del:function (index) {
+            this.cellData.splice(index,1)
+        },
+        delAll:function () {
+            this.cellData=[]
+        }
+    }
+})
+</script>
+</body>
+</html>
